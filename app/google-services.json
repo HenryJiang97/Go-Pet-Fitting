@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "468371157354",
+    "firebase_url": "https://gopetfitting.firebaseio.com",
+    "project_id": "gopetfitting",
+    "storage_bucket": "gopetfitting.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468371157354:android:7e5900ba753a19ef123513",
+        "android_client_info": {
+          "package_name": "com.gopetfitting.gopetfitting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "468371157354-121a52inh17liclbv8om7gtpm62plq8k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCikSnL3XPDA6-WpP61pNdpvXqL2Boa6NE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "468371157354-121a52inh17liclbv8om7gtpm62plq8k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
