@@ -1,5 +1,7 @@
 package com.example.gopetfitting;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class User {
@@ -13,9 +15,9 @@ public class User {
     // Personal info
     private int age;
     private Sex sex;
-    private Double height;
-    private Double weight;
-    private Double targetWeight;
+    private double height;
+    private double weight;
+    private double targetWeight;
 //    private int targetCaloriesLoss;
 
     // Intake
@@ -23,7 +25,7 @@ public class User {
     private int caloriesIntake;
 
     // Activity
-    private UUID activityId;
+    private List<UUID> activityIds;
     private Time exerciseTime;
 
     // Pet
@@ -32,7 +34,7 @@ public class User {
     private int checkInDays;
 
 
-    public User(String name, String email, int age, Sex sex, Double height, Double weight, Double targetWeight) {
+    public User(String name, String email, int age, Sex sex, double height, double weight, double targetWeight) {
         this.userId = UUID.randomUUID();
         this.name = name;
         this.email = email;
@@ -43,10 +45,12 @@ public class User {
         this.targetWeight = targetWeight;
         this.lostCalories = 0;
         this.caloriesIntake = 0;
-        this.activityId = UUID.randomUUID();
+        this.activityIds = new ArrayList<>();
         this.exerciseTime = new Time(0, 0, 0);
         this.petId = UUID.randomUUID();
         this.coins = 0;
         this.checkInDays = 0;
     }
+
+
 }
