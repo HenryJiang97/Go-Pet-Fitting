@@ -53,4 +53,64 @@ public class User {
     }
 
 
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Sex getSex() {
+        return sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public List<UUID> getActivityIds() {
+        return activityIds;
+    }
+
+    public UUID getPetId() {
+        return petId;
+    }
+
+    public int getLostCalories() {
+        return lostCalories;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public Time getExerciseTime() {
+        return exerciseTime;
+    }
+
+    public double getTargetWeight() {
+        return targetWeight;
+    }
+
+    public int getCaloriesIntake() {
+        return caloriesIntake;
+    }
+
+    public int getCheckInDays() {
+        return checkInDays;
+    }
+    
 }
