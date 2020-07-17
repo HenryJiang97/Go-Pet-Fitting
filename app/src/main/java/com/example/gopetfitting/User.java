@@ -18,7 +18,7 @@ public class User {
     private double height;
     private double weight;
     private double targetWeight;
-//    private int targetCaloriesLoss;
+    private int targetCaloriesLoss;
 
     // Intake
     private int lostCalories;
@@ -26,7 +26,8 @@ public class User {
 
     // Activity
     private List<UUID> activityIds;
-    private Time exerciseTime;
+    private long totalExerciseTime;
+    private int completedWeeks;
 
     // Pet
     private UUID petId;
@@ -45,14 +46,16 @@ public class User {
         this.targetWeight = targetWeight;
         this.lostCalories = 0;
         this.caloriesIntake = 0;
+        this.targetCaloriesLoss = calculateTargetCaloriesLoss(weight, targetWeight);
         this.activityIds = new ArrayList<>();
-        this.exerciseTime = new Time(0, 0, 0);
+        this.totalExerciseTime = 0;
+        this.completedWeeks = 0;
         this.petId = UUID.randomUUID();
         this.coins = 0;
         this.checkInDays = 0;
     }
 
-
+    // Getters
     public UUID getUserId() {
         return userId;
     }
@@ -97,8 +100,8 @@ public class User {
         return coins;
     }
 
-    public Time getExerciseTime() {
-        return exerciseTime;
+    public long getTotalExerciseTime() {
+        return totalExerciseTime;
     }
 
     public double getTargetWeight() {
@@ -112,5 +115,20 @@ public class User {
     public int getCheckInDays() {
         return checkInDays;
     }
-    
+
+    public int getCompletedWeeks() {
+        return completedWeeks;
+    }
+
+    public int getTargetCaloriesLoss() {
+        return targetCaloriesLoss;
+    }
+
+
+    // Methods
+
+    // TODO: Implement the method to calculate target calories loss for the user
+    private int calculateTargetCaloriesLoss(double _weight, double _targetWeight) {
+        return 0;
+    }
 }

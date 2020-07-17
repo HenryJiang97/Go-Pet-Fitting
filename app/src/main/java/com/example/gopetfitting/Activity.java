@@ -1,15 +1,16 @@
 package com.example.gopetfitting;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 public class Activity {
 
     private UUID activityId;
+    private Timestamp startTime;
     private boolean ifCompleted;
     private int steps;
     private double distance;
     private int burnedCalories;
-    private Time exerciseTime;
     private double speed;
 
     public Activity() {
@@ -18,10 +19,11 @@ public class Activity {
         this.steps = 0;
         this.distance = 0.0;
         this.burnedCalories = 0;
-        this.exerciseTime = new Time(0, 0, 0);
+        this.startTime = new Timestamp(System.currentTimeMillis());
         this.speed = 0.0;
     }
 
+    // Getters
     public UUID getActivityId() {
         return activityId;
     }
@@ -42,8 +44,8 @@ public class Activity {
         return burnedCalories;
     }
 
-    public Time getExerciseTime() {
-        return exerciseTime;
+    public Timestamp getStartTime() {
+        return startTime;
     }
 
     public double getSpeed() {
