@@ -1,14 +1,29 @@
 package com.example.gopetfitting;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.MediaStore;
+
+import androidx.core.content.FileProvider;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeoutException;
+
+import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 public class User {
-
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
     // Basic login info
+    private Timestamp createTime;
     private UUID userId;
-//    private UUID imageId;
+    private UUID imageId;
     private String name;
     private String email;
 
@@ -18,6 +33,7 @@ public class User {
     private double height;
     private double weight;
     private double targetWeight;
+    private int completeWeeks;
     private int targetCaloriesLoss;
 
     // Intake
@@ -33,9 +49,17 @@ public class User {
     private UUID petId;
     private int coins;
     private int checkInDays;
+    // 0 < beatRank < 1
+    private double beatRank;
+    // for pets
+    private int haveFood;
+    private int haveWater;
+    private int haveVaccination;
+    private int haveToys;
 
-
-    public User(String name, String email, int age, Sex sex, double height, double weight, double targetWeight) {
+    public User(String name, String email, int age, Sex sex, double height, double weight, double targetWeight, boolean create) {
+        if(create) this.createTime =new Timestamp(System.currentTimeMillis());
+        System.out.printf("\ncreateTime is: %s\n", this.createTime.toString());
         this.userId = UUID.randomUUID();
         this.name = name;
         this.email = email;
@@ -56,6 +80,10 @@ public class User {
     }
 
     // Getters
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
     public UUID getUserId() {
         return userId;
     }
@@ -131,4 +159,27 @@ public class User {
     private int calculateTargetCaloriesLoss(double _weight, double _targetWeight) {
         return 0;
     }
+
+//    private void dispatchTakePictureIntent() {
+//        PackageManager packageManager = getPackageManager();
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        // Ensure that there's a camera activity to handle the intent
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            // Create the File where the photo should go
+//            File photoFile = null;
+//            try {
+//                photoFile = createImageFile();
+//            } catch (IOException ex) {
+//                // Error occurred while creating the File
+//            }
+//            // Continue only if the File was successfully created
+//            if (photoFile != null) {
+//                Uri photoURI = FileProvider.getUriForFile(this,
+//                        "com.example.android.fileprovider",
+//                        photoFile);
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+//            }
+//        }
+//    }
 }

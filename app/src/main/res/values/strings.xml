@@ -14,5 +14,11 @@
     <string name="height">Height</string>
     <string name="weight">Weight</string>
     <string name="submit">Submit</string>
+<!--    change profile photo choices-->
+    <string-array name="photoArr">
+        <item>change photo</item>
+        <item>take photo</item>
+        <item>choose from gallery</item>
+    </string-array>
 
 </resources>
