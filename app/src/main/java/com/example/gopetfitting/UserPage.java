@@ -42,7 +42,10 @@ public class UserPage extends AppCompatActivity {
     private List<String> photoChoice;
     private ArrayAdapter<String> arrAdapter;
     private String pictureFilePath = null;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int PICK_IMAGE = 100;
+    private Uri imageUri;
+    private String photoFrom = "change photo";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,12 +69,13 @@ public class UserPage extends AppCompatActivity {
 
                 String[] photoChoices = getResources().getStringArray(R.array.photoArr);
                 Toast.makeText(UserPage.this, "You click:" + photoChoices[pos], Toast.LENGTH_SHORT).show();
-                if("from album".equals(photoChoices[pos]))  {
+                if ("from album".equals(photoChoices[pos])) {
                     System.out.println("from album");
                     return;
                 }
                 if ("take photo".equals(photoChoices[pos])) {
                     System.out.println("choose take photo");
+                    photoFrom = "take photo";
                     if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                         //Logger.info("permission not allowed");
                         System.out.println("permission not allowed");
@@ -81,8 +85,12 @@ public class UserPage extends AppCompatActivity {
                         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     }
+                } else if ("choose from gallery".equals(photoChoices[pos])) {
+                    System.out.println("choose from gallery");
+                    photoFrom = "choose from gallery";
+                    openGallery();
                 }
-        }
+            }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -145,28 +153,35 @@ public class UserPage extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         System.out.println("onActivityResult");
         super.onActivityResult(requestCode, resultCode, data); // add super call????
-        // save to local storage
-        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String pictureFile = "userimage" + timeStamp;
+        if ("take photo".equals(photoFrom)) {
+            // save to local storage
+            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+            String pictureFile = "userimage" + timeStamp;
 
-        // save picttures to local device
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = null;
-        try {
-            image = File.createTempFile(pictureFile,  ".jpg", storageDir);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        pictureFilePath = image.getAbsolutePath();
-        System.out.println("pictureFilePath " + pictureFilePath);
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            File imgFile = new  File(pictureFilePath);
-            System.out.println("imgFile is: "+imgFile.toString());
+            // save picttures to local device
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File image = null;
+            try {
+                image = File.createTempFile(pictureFile, ".jpg", storageDir);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            pictureFilePath = image.getAbsolutePath();
+            System.out.println("pictureFilePath " + pictureFilePath);
+            if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+                File imgFile = new File(pictureFilePath);
+                System.out.println("imgFile is: " + imgFile.toString());
 //            if(imgFile.exists())            {
 //                imageView.setImageURI(Uri.fromFile(imgFile));
 //            }
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(photo);
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                imageView.setImageBitmap(photo);
+            }
+        } else if ("choose from gallery".equals(photoFrom)) {
+            if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
+                imageUri = data.getData();
+                imageView.setImageURI(imageUri);
+            }
         }
     }
 
@@ -174,10 +189,17 @@ public class UserPage extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String pictureFile = "userimage" + timeStamp;
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(pictureFile,  ".jpg", storageDir);
+        File image = File.createTempFile(pictureFile, ".jpg", storageDir);
         pictureFilePath = image.getAbsolutePath();
         System.out.println("pictureFilePath " + pictureFilePath);
         return image;
+    }
+
+    private void openGallery() {
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        gallery.setType("image/*");
+        gallery.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(gallery, PICK_IMAGE);
     }
 }
 
