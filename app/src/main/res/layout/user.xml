@@ -6,6 +6,144 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coins and Pets"
+        android:textColor="#E53935"
+        tools:layout_editor_absoluteX="26dp"
+        tools:layout_editor_absoluteY="581dp" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="68dp"
+        android:layout_height="22dp"
+        android:text="indoor"
+        android:textColor="#8E24AA"
+        tools:layout_editor_absoluteX="236dp"
+        tools:layout_editor_absoluteY="545dp" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="68dp"
+        android:layout_height="22dp"
+        android:text="outdoor"
+        android:textColor="#8E24AA"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="545dp" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="98dp"
+        android:layout_height="24dp"
+        android:text="Let's exercise!!!"
+        android:textColor="#8E24AA"
+        tools:layout_editor_absoluteX="150dp"
+        tools:layout_editor_absoluteY="440dp" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="346"
+        android:textColor="#F4511E"
+        android:textColorHighlight="#A33E1E"
+        tools:layout_editor_absoluteX="257dp"
+        tools:layout_editor_absoluteY="399dp" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="98dp"
+        android:layout_height="24dp"
+        android:text="To complete:"
+        android:textColor="#E53935"
+        tools:layout_editor_absoluteX="150dp"
+        tools:layout_editor_absoluteY="399dp" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="888"
+        android:textColor="#F4511E"
+        android:textColorHighlight="#A33E1E"
+        tools:layout_editor_absoluteX="257dp"
+        tools:layout_editor_absoluteY="372dp" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="107dp"
+        android:layout_height="20dp"
+        android:text="I have finished:"
+        tools:layout_editor_absoluteX="143dp"
+        tools:layout_editor_absoluteY="372dp" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="236dp"
+        android:layout_height="27dp"
+        android:text="Total calories(kcals) to lose today: "
+        tools:layout_editor_absoluteX="21dp"
+        tools:layout_editor_absoluteY="345dp" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="52dp"
+        android:layout_height="21dp"
+        android:text="Today"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="99dp" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calories and Exercise"
+        android:textColor="#E53935"
+        tools:layout_editor_absoluteX="26dp"
+        tools:layout_editor_absoluteY="317dp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="61dp"
+        android:layout_height="38dp"
+        android:text="Save"
+        tools:layout_editor_absoluteX="218dp"
+        tools:layout_editor_absoluteY="258dp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="135dp"
+        android:layout_height="23dp"
+        android:text="complete weeks: "
+        tools:layout_editor_absoluteX="185dp"
+        tools:layout_editor_absoluteY="225dp" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="81dp"
+        android:layout_height="22dp"
+        android:text="target: "
+        tools:layout_editor_absoluteX="81dp"
+        tools:layout_editor_absoluteY="226dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="81dp"
+        android:layout_height="22dp"
+        android:text="weight: "
+        tools:layout_editor_absoluteX="279dp"
+        tools:layout_editor_absoluteY="185dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="81dp"
+        android:layout_height="22dp"
+        android:text="height: "
+        tools:layout_editor_absoluteX="162dp"
+        tools:layout_editor_absoluteY="185dp" />
+
     <ImageView
         android:id="@+id/userImage"
         android:layout_width="86dp"
@@ -29,6 +167,171 @@
         android:layout_height="89dp"
         android:color="@color/colorAccent"
         android:entries="@array/photoArr"
+        tools:layout_editor_absoluteX="248dp"
+        tools:layout_editor_absoluteY="67dp" />
+
+    <Button
+        android:id="@+id/checkIn"
+        android:layout_width="96dp"
+        android:layout_height="40dp"
+        android:text="check in"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="48dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Information"
+        android:textColor="#E53935"
+        tools:layout_editor_absoluteX="26dp"
+        tools:layout_editor_absoluteY="156dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="81dp"
+        android:layout_height="22dp"
+        android:text="age: "
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="185dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="61dp"
+        android:layout_height="38dp"
+        android:text="Edit"
+        tools:layout_editor_absoluteX="112dp"
+        tools:layout_editor_absoluteY="258dp" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="59dp"
+        android:layout_height="26dp"
+        android:text="07/20"
+        tools:layout_editor_absoluteX="72dp"
+        tools:layout_editor_absoluteY="99dp" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1234"
+        android:textColor="#F4511E"
+        android:textColorHighlight="#A33E1E"
         tools:layout_editor_absoluteX="257dp"
-        tools:layout_editor_absoluteY="70dp" />
+        tools:layout_editor_absoluteY="345dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="44dp"
+        android:layout_height="43dp"
+        app:srcCompat="@mipmap/snack"
+        tools:layout_editor_absoluteX="312dp"
+        tools:layout_editor_absoluteY="336dp" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        tools:layout_editor_absoluteX="304dp"
+        tools:layout_editor_absoluteY="345dp" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="63dp"
+        android:layout_height="55dp"
+        app:srcCompat="@mipmap/exercise_round"
+        tools:layout_editor_absoluteX="226dp"
+        tools:layout_editor_absoluteY="482dp" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="63dp"
+        android:layout_height="64dp"
+        app:srcCompat="@mipmap/run_round"
+        tools:layout_editor_absoluteX="116dp"
+        tools:layout_editor_absoluteY="473dp" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="56dp"
+        android:layout_height="57dp"
+        app:srcCompat="@mipmap/coin"
+        tools:layout_editor_absoluteX="94dp"
+        tools:layout_editor_absoluteY="612dp" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="70dp"
+        android:layout_height="66dp"
+        app:srcCompat="@mipmap/pet_round"
+        tools:layout_editor_absoluteX="226dp"
+        tools:layout_editor_absoluteY="612dp" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="x12"
+        tools:layout_editor_absoluteX="112dp"
+        tools:layout_editor_absoluteY="678dp" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Growth value: 80"
+        tools:layout_editor_absoluteX="207dp"
+        tools:layout_editor_absoluteY="678dp" />
+
+    <TextView
+        android:id="@+id/textView24"
+        android:layout_width="190dp"
+        android:layout_height="22dp"
+        android:text="Your pet beats 80% of all!!!"
+        android:textColor="#D81B60"
+        tools:layout_editor_absoluteX="106dp"
+        tools:layout_editor_absoluteY="717dp" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pet's Home"
+        tools:layout_editor_absoluteX="2dp"
+        tools:layout_editor_absoluteY="802dp" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="85dp"
+        android:layout_height="50dp"
+        android:text="run"
+        app:layout_constraintStart_toEndOf="@+id/button4"
+        tools:layout_editor_absoluteY="800dp" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="play indoor"
+        tools:layout_editor_absoluteX="189dp"
+        tools:layout_editor_absoluteY="802dp" />
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My moment"
+        tools:layout_editor_absoluteX="301dp"
+        tools:layout_editor_absoluteY="802dp" />
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Angela"
+        tools:layout_editor_absoluteX="184dp"
+        tools:layout_editor_absoluteY="137dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
