@@ -58,7 +58,7 @@ public class User {
     private int haveToys;
 
     public User(String name, String email, int age, Sex sex, double height, double weight, double targetWeight, boolean create) {
-        if(create) this.createTime =new Timestamp(System.currentTimeMillis());
+        if (create) this.createTime = new Timestamp(System.currentTimeMillis());
         System.out.printf("\ncreateTime is: %s\n", this.createTime.toString());
         this.userId = UUID.randomUUID();
         this.name = name;

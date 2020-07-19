@@ -1,7 +1,6 @@
 package com.example.gopetfitting;
 
-import java.sql.Time;
-import 	java.sql.Timestamp;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 public class Pet {
@@ -17,7 +16,22 @@ public class Pet {
     private Timestamp lastDrinkTime;
     private Timestamp lastVaccinationTime;
     private Timestamp lastCleanTime;
-    private int growthScore;
+    private double growthScore;
+    private PetStatus status;
+
+    public Pet(String name) {
+        this.petId = UUID.randomUUID();
+        this.petName = name;
+        this.hunger = 100;
+        this.health = 0;
+        this.cleanness = 0;
+        this.happiness = 10;
+        this.lastCleanTime = null;
+        this.lastDrinkTime = null;
+        this.lastFoodTime = null;
+        this.lastVaccinationTime = null;
+        this.growthScore = (100 - hunger + health + cleanness + happiness) * 0.25;
+    }
 
     public UUID getPetId() {
         return petId;
@@ -99,11 +113,19 @@ public class Pet {
         this.lastCleanTime = lastCleanTime;
     }
 
-    public int getGrowthScore() {
+    public double getGrowthScore() {
         return growthScore;
     }
 
     public void setGrowthScore(int growthScore) {
         this.growthScore = growthScore;
+    }
+
+    public PetStatus getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(PetStatus status) {
+        this.status = status;
     }
 }
