@@ -30,11 +30,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static com.example.gopetfitting.User.REQUEST_IMAGE_CAPTURE;
 
 public class UserPage extends AppCompatActivity {
+    private User user;
     private static final int CAMERA_REQUEST = 1888;
     private ImageView imageView;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
@@ -51,6 +51,7 @@ public class UserPage extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user);
+        user = new User();
         this.imageView = (ImageView) this.findViewById(R.id.userImage);
         this.spinner = (Spinner) findViewById(R.id.changePhoto);
         this.photoChoice = new ArrayList<String>() {{
@@ -176,11 +177,15 @@ public class UserPage extends AppCompatActivity {
 //            }
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 imageView.setImageBitmap(photo);
+                user.setLocalImage(pictureFile);
+                System.out.println("localimage is: " + user.getLocalImage());
             }
         } else if ("choose from gallery".equals(photoFrom)) {
             if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
                 imageUri = data.getData();
                 imageView.setImageURI(imageUri);
+                user.setLocalImage(data.getData().toString());
+                System.out.println("gallery localimage is: " + user.getLocalImage());
             }
         }
     }

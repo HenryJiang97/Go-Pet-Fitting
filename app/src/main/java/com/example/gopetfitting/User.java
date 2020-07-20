@@ -24,6 +24,7 @@ public class User {
     private Timestamp createTime;
     private UUID userId;
     private UUID imageId;
+    private String localImage; // the location path where user store image
     private String name;
     private String email;
 
@@ -58,7 +59,11 @@ public class User {
     private int haveToys;
 
     public User(String name, String email, int age, Sex sex, double height, double weight, double targetWeight, boolean create) {
-        if (create) this.createTime = new Timestamp(System.currentTimeMillis());
+        if (create) {
+            this.createTime = new Timestamp(System.currentTimeMillis());
+            this.imageId = UUID.randomUUID();
+            this.localImage = null;
+        }
         System.out.printf("\ncreateTime is: %s\n", this.createTime.toString());
         this.userId = UUID.randomUUID();
         this.name = name;
@@ -78,7 +83,9 @@ public class User {
         this.coins = 0;
         this.checkInDays = 0;
     }
-
+    public User() {
+        this.createTime = new Timestamp(System.currentTimeMillis());
+    }
     // Getters
     public Timestamp getCreateTime() {
         return createTime;
@@ -152,12 +159,108 @@ public class User {
         return targetCaloriesLoss;
     }
 
+    public String getLocalImage() { return this.localImage; }
 
     // Methods
 
     // TODO: Implement the method to calculate target calories loss for the user
     private int calculateTargetCaloriesLoss(double _weight, double _targetWeight) {
         return 0;
+    }
+
+    public void setImageId(UUID imageId) {
+        this.imageId = imageId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public void setTargetWeight(double targetWeight) {
+        this.targetWeight = targetWeight;
+    }
+
+    public void setCompleteWeeks(int completeWeeks) {
+        this.completeWeeks = completeWeeks;
+    }
+
+    public void setTargetCaloriesLoss(int targetCaloriesLoss) {
+        this.targetCaloriesLoss = targetCaloriesLoss;
+    }
+
+    public void setLostCalories(int lostCalories) {
+        this.lostCalories = lostCalories;
+    }
+
+    public void setCaloriesIntake(int caloriesIntake) {
+        this.caloriesIntake = caloriesIntake;
+    }
+
+    public void setActivityIds(List<UUID> activityIds) {
+        this.activityIds = activityIds;
+    }
+
+    public void setTotalExerciseTime(long totalExerciseTime) {
+        this.totalExerciseTime = totalExerciseTime;
+    }
+
+    public void setCompletedWeeks(int completedWeeks) {
+        this.completedWeeks = completedWeeks;
+    }
+
+    public void setPetId(UUID petId) {
+        this.petId = petId;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
+    public void setCheckInDays(int checkInDays) {
+        this.checkInDays = checkInDays;
+    }
+
+    public void setBeatRank(double beatRank) {
+        this.beatRank = beatRank;
+    }
+
+    public void setHaveFood(int haveFood) {
+        this.haveFood = haveFood;
+    }
+
+    public void setHaveWater(int haveWater) {
+        this.haveWater = haveWater;
+    }
+
+    public void setHaveVaccination(int haveVaccination) {
+        this.haveVaccination = haveVaccination;
+    }
+
+    public void setHaveToys(int haveToys) {
+        this.haveToys = haveToys;
+    }
+    public void setLocalImage(String loc) {
+        this.localImage = loc;
     }
 
 //    private void dispatchTakePictureIntent() {
