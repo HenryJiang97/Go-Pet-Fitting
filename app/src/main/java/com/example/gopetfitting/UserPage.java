@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -40,7 +39,7 @@ public class UserPage extends AppCompatActivity {
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     private Spinner spinner;
     private List<String> photoChoice;
-    private ArrayAdapter<String> arrAdapter;
+    private ArrayAdapter arrAdapter;
     private String pictureFilePath = null;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PICK_IMAGE = 100;
@@ -59,7 +58,9 @@ public class UserPage extends AppCompatActivity {
             add("take photo");
             add("choose from gallery");
         }};
-        arrAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, photoChoice);
+        arrAdapter = ArrayAdapter.createFromResource(this, R.array.photoArr, R.layout.spinner_style);
+        //spinner.setAdapter(arrAdapter);
+//        arrAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, photoChoice);
         arrAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrAdapter);
         //spinner.setOnItemClickListener();
@@ -70,10 +71,6 @@ public class UserPage extends AppCompatActivity {
 
                 String[] photoChoices = getResources().getStringArray(R.array.photoArr);
                 Toast.makeText(UserPage.this, "You click:" + photoChoices[pos], Toast.LENGTH_SHORT).show();
-                if ("from album".equals(photoChoices[pos])) {
-                    System.out.println("from album");
-                    return;
-                }
                 if ("take photo".equals(photoChoices[pos])) {
                     System.out.println("choose take photo");
                     photoFrom = "take photo";
@@ -96,19 +93,9 @@ public class UserPage extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // Another interface callback
+
             }
         });
-//        spinner.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-//                } else {
-//                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
-//                }
-//            }
-//        });
     }
 
     @Override

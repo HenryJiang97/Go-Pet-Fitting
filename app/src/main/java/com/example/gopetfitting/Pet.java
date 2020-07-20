@@ -6,6 +6,7 @@ import java.util.UUID;
 public class Pet {
     private UUID petId;
     private String petName;
+    private PetType type;
     // private Timestamp createTime;
     // pet's growth values
     private int hunger; // 0-110
@@ -19,9 +20,11 @@ public class Pet {
     private double growthScore;
     private PetStatus status;
 
-    public Pet(String name) {
+    public Pet(String name, PetType type) {
         this.petId = UUID.randomUUID();
         this.petName = name;
+        this.status = PetStatus.ALIVE;
+        this.type = type;
         this.hunger = 100;
         this.health = 0;
         this.cleanness = 0;
@@ -32,6 +35,10 @@ public class Pet {
         this.lastVaccinationTime = null;
         this.growthScore = (100 - hunger + health + cleanness + happiness) * 0.25;
     }
+    // todo: there are some status transform needs to finish later:
+    // 1. if pet's growth value <=0, the pet will get FROZEN.
+    // 2. when die, pet will be temporarily banned from all performance
+    // 3. when growth value > 0, pets turn to ALIVE
 
     public UUID getPetId() {
         return petId;
@@ -127,5 +134,17 @@ public class Pet {
 
     public void setStatus(PetStatus status) {
         this.status = status;
+    }
+
+    public PetType getType() {
+        return type;
+    }
+
+    public void setType(PetType type) {
+        this.type = type;
+    }
+
+    public void setGrowthScore(double growthScore) {
+        this.growthScore = growthScore;
     }
 }
