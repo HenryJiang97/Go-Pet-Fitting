@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item android:drawable="@mipmap/dog1_foreground" android:duration="5"/>
+    <item android:drawable="@mipmap/dog2_foreground" android:duration="5"/>
+    <item android:drawable="@mipmap/dog3_foreground" android:duration="5"/>
+    <item android:drawable="@mipmap/dog4_foreground" android:duration="5"/>
+<!--    <item android:drawable="@drawable/pic04" android:duration="120"/>-->
+<!--    <item android:drawable="@drawable/pic05" android:duration="120"/>-->
+</animation-list>
