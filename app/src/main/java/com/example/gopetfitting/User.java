@@ -42,7 +42,7 @@ public class User {
     private int caloriesIntake;
 
     // Activity
-    private List<UUID> activityIds;
+//    private List<UUID> activityIds;
     private long totalExerciseTime;
     private int completedWeeks;
 
@@ -76,7 +76,7 @@ public class User {
         this.lostCalories = 0;
         this.caloriesIntake = 0;
         this.targetCaloriesLoss = calculateTargetCaloriesLoss(weight, targetWeight);
-        this.activityIds = new ArrayList<>();
+       // this.activityIds = new ArrayList<>();
         this.totalExerciseTime = 0;
         this.completedWeeks = 0;
         this.petId = UUID.randomUUID();
@@ -119,10 +119,6 @@ public class User {
 
     public double getWeight() {
         return weight;
-    }
-
-    public List<UUID> getActivityIds() {
-        return activityIds;
     }
 
     public UUID getPetId() {
@@ -220,9 +216,6 @@ public class User {
         this.caloriesIntake = caloriesIntake;
     }
 
-    public void setActivityIds(List<UUID> activityIds) {
-        this.activityIds = activityIds;
-    }
 
     public void setTotalExerciseTime(long totalExerciseTime) {
         this.totalExerciseTime = totalExerciseTime;

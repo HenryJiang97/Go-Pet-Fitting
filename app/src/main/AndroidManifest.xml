@@ -40,7 +40,7 @@
         <!-- &lt;!&ndash;                android:name="android.support.FILE_PROVIDER_PATHS"&ndash;&gt; -->
         <!-- &lt;!&ndash;                android:resource="@xml/paths"></meta-data>&ndash;&gt; -->
         <!-- </provider> -->
-        <activity android:name=".UserPage">
+        <activity android:name=".MultiaudioActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
