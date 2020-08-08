@@ -44,4 +44,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/button10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="stop"
+        android:onClick="stop"
+        app:layout_constraintEnd_toStartOf="@+id/sweet"
+        app:layout_constraintHorizontal_bias="0.409"
+        app:layout_constraintStart_toEndOf="@+id/blues"
+        app:layout_constraintTop_toBottomOf="@+id/dog_guitar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -45,7 +45,7 @@ public class MultiaudioActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 
-        // stop playing music
+         //stop playing music
 //        if (mp != null && mp.isPlaying()) {
 //            mp.stop();
 //        }
@@ -75,10 +75,15 @@ public class MultiaudioActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 
-        // stop playing music
+//        // stop playing music
 //        if (mp != null && mp.isPlaying()) {
 //            mp.stop();
 //        }
+    }
+    public void stop(View view) {
+        if (mp != null && mp.isPlaying()) {
+            mp.stop();
+        }
     }
 
 }

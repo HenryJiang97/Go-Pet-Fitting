@@ -3,6 +3,7 @@ package com.example.gopetfitting;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,12 +32,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.example.gopetfitting.User.REQUEST_IMAGE_CAPTURE;
-
-public class UserPage extends AppCompatActivity {
+public class UserPageActivity extends AppCompatActivity {
     private User user;
     private static final int CAMERA_REQUEST = 1888;
     private ImageView imageView;
+    private Button petHome;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     private Spinner spinner;
     private List<String> photoChoice;
@@ -45,11 +46,18 @@ public class UserPage extends AppCompatActivity {
     private static final int PICK_IMAGE = 100;
     private Uri imageUri;
     private String photoFrom = "change photo";
-
+    private TextView coins;
+    private boolean hasCheck;
+    int duration = Toast.LENGTH_SHORT;
+    CharSequence text;
+    Toast toast;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user);
+        coins = (TextView) findViewById(R.id.textView22);
+        petHome = (Button)findViewById(R.id.button4);
+        hasCheck = false;
         user = new User();
         this.imageView = (ImageView) this.findViewById(R.id.userImage);
         this.spinner = (Spinner) findViewById(R.id.changePhoto);
@@ -70,7 +78,7 @@ public class UserPage extends AppCompatActivity {
                                        int pos, long id) {
 
                 String[] photoChoices = getResources().getStringArray(R.array.photoArr);
-                Toast.makeText(UserPage.this, "You click:" + photoChoices[pos], Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserPageActivity.this, "You click:" + photoChoices[pos], Toast.LENGTH_SHORT).show();
                 if ("take photo".equals(photoChoices[pos])) {
                     System.out.println("choose take photo");
                     photoFrom = "take photo";
@@ -192,6 +200,21 @@ public class UserPage extends AppCompatActivity {
         gallery.setType("image/*");
         gallery.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(gallery, PICK_IMAGE);
+    }
+
+    public void checkin(View view) {
+        if(hasCheck) return;
+        text = "coin +1";
+        Context context = getApplicationContext();
+        toast = Toast.makeText(context, text, duration);
+        toast.setGravity(Gravity.TOP|Gravity.LEFT, 0, 0);
+        toast.show();
+        coins.setText(String.valueOf(Integer.parseInt(coins.getText().toString())+1));
+    }
+    public void toPet(View view) {
+        Intent intent=new Intent();
+        intent.setClass(UserPageActivity.this, PetHomeActivity.class);
+        startActivity(intent);
     }
 }
 

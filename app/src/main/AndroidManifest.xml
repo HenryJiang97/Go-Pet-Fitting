@@ -22,25 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<!--        <meta-data-->
-<!--            android:name="com.google.android.actions"-->
-<!--            android:resource="@xml/dog_walk_actions" />-->
-        <!-- <activity android:name=".Signup"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
-        <!-- <provider -->
-        <!-- android:name="androidx.core.content.FileProvider" -->
-        <!-- android:authorities="com.zoftino.android.fileprovider" -->
-        <!-- android:exported="false" -->
-        <!-- android:grantUriPermissions="true"> -->
-        <!-- &lt;!&ndash;            <meta-data&ndash;&gt; -->
-        <!-- &lt;!&ndash;                android:name="android.support.FILE_PROVIDER_PATHS"&ndash;&gt; -->
-        <!-- &lt;!&ndash;                android:resource="@xml/paths"></meta-data>&ndash;&gt; -->
-        <!-- </provider> -->
-        <activity android:name=".MultiaudioActivity">
+        <activity android:name=".UserPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,14 +30,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".DogTouchActivity" />
-<!--        <activity android:name=".UserPage">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+        <activity android:name=".PetHomeActivity" />
         <activity android:name=".DogWalkActivity" />
+        <activity android:name=".MultiaudioActivity" />
         <activity android:name=".Signup" />
     </application>
 
