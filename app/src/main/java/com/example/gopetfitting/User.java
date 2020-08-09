@@ -65,6 +65,8 @@ public class User implements Serializable {
         this.score = 0;
         this.activityId = "";
     }
+    public User() {
+    }
 
     public User(String uid, String name, String email,
                 int age, Sex sex, double height, double weight, double targetWeight, int targetCaloriesLoss, String petName, PetType petType) {

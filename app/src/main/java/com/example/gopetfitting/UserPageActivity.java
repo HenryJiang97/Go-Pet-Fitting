@@ -66,12 +66,12 @@ public class UserPageActivity extends AppCompatActivity {
     CharSequence text;
     Toast toast;
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.user);
+    public void onStart() {
+        super.onStart();
         user =(User)getIntent().getSerializableExtra("user");
         name = (TextView) findViewById(R.id.textView25);
         if(user == null) {
+            Log.d("user == null", "1");
             name.setText("alice");
             age = (EditText)findViewById(R.id.age);
             age.setText("22");
@@ -84,10 +84,24 @@ public class UserPageActivity extends AppCompatActivity {
             weeks = (EditText) findViewById(R.id.weeks);
             weeks.setText("8");
             finished = (TextView) findViewById(R.id.textView15);
-            finished.setText("146");
+            finished.setText("0");
         }
         //Log.d("userpass: ", user.getName());
         if(user != null) {
+            Log.d("userage: ", String.valueOf(user.getAge()));
+//            name.setText("alice");
+//            age = (EditText)findViewById(R.id.age);
+//            age.setText("22");
+//            height = (EditText) findViewById(R.id.height);
+//            height.setText("170");
+//            weight = (EditText) findViewById(R.id.weight);
+//            weight.setText("120");
+//            target = (EditText) findViewById(R.id.target);
+//            target.setText("100");
+//            weeks = (EditText) findViewById(R.id.weeks);
+//            weeks.setText("8");
+//            finished = (TextView) findViewById(R.id.textView15);
+//            finished.setText("146");
             name.setText(user.getName());
             age = (EditText)findViewById(R.id.age);
             age.setText(String.valueOf(user.getAge()));
@@ -109,7 +123,7 @@ public class UserPageActivity extends AppCompatActivity {
         if(exercise != null) {
 
             finished.setText(String.valueOf(Integer.parseInt(finished.getText().toString())+exercise.getBurnedCalories()));
-            coins.setText(String.valueOf(Integer.parseInt(coins.getText().toString())+(int)(exercise.getBurnedCalories()/100)));
+            coins.setText(String.valueOf(Integer.parseInt(coins.getText().toString())+(int)(exercise.getBurnedCalories()/10)));
         }
         loseTotal = (TextView)findViewById(R.id.textView12);
         loseTotal.setText("1453");
@@ -121,6 +135,17 @@ public class UserPageActivity extends AppCompatActivity {
         //Log.d("petpass: ", pet.getPetName());
         petHome = (Button)findViewById(R.id.button4);
         hasCheck = false;
+        //outdoor = (ImageView) findViewById(R.id.imageView3);
+        //user = new User();
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.user);
+        user = new User();
+//        age = (EditText)findViewById(R.id.age);
+//        age.setText("22");
+        ////////////////////////////////////
         //outdoor = (ImageView) findViewById(R.id.imageView3);
         //user = new User();
         this.imageView = (ImageView) this.findViewById(R.id.userImage);
@@ -291,6 +316,18 @@ public class UserPageActivity extends AppCompatActivity {
     public void toIndoor(View view) {
         Intent intent=new Intent();
         intent.setClass(UserPageActivity.this, IndoorExercise.class);
+        startActivity(intent);
+    }
+
+    public void toMoments(View view) {
+        Intent intent=new Intent();
+        intent.setClass(UserPageActivity.this, MomentsActivity.class);
+        startActivity(intent);
+    }
+
+    public void toPetStore(View view) {
+        Intent intent=new Intent();
+        intent.setClass(UserPageActivity.this, PetStoreActivity.class);
         startActivity(intent);
     }
 }

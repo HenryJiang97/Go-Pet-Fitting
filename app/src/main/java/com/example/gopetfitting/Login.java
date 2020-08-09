@@ -72,6 +72,9 @@ public class Login extends AppCompatActivity {
                 String password = passwordET.getText().toString();
 
                 signInUser(email, password);
+                Intent intent = new Intent(getBaseContext(), UserPageActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
             }
         });
 
@@ -126,9 +129,9 @@ public class Login extends AppCompatActivity {
 
 
                                             // TODO: Parse data to profile activity
-//                                            Intent intent = new Intent(getBaseContext(), Profile.class);
-//                                            intent.putExtra("user", user);
-//                                            startActivity(intent);
+                                            Intent intent = new Intent(getBaseContext(), UserPageActivity.class);
+                                            intent.putExtra("user", user);
+                                            startActivity(intent);
 
 
                                         } else {
@@ -211,4 +214,5 @@ public class Login extends AppCompatActivity {
 
         return user;
     }
+
 }
