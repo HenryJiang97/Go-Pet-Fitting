@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PetHomeActivity extends AppCompatActivity {
+    private TextView name;
+    private Pet pet;
     private ImageView iv;
     private ImageView iv2;
     private Timer mTimer1;
@@ -38,6 +41,10 @@ public class PetHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pet_home);
+        name = (TextView) findViewById(R.id.textView27);
+        pet = (Pet)getIntent().getSerializableExtra("pet");
+        Log.d("pet name set: ", pet.getPetName());
+        name.setText(pet.getPetName());
         myPage = (Button) findViewById(R.id.button9);
         iv = (ImageView)findViewById(R.id.imageView8);
         iv2 = (ImageView)findViewById(R.id.imageView12);
@@ -63,7 +70,7 @@ public class PetHomeActivity extends AppCompatActivity {
         toast.setGravity(Gravity.TOP|Gravity.RIGHT, -10, 10);
         toast.show();
         progressBar2.setProgress(progressBar2.getProgress()+2);
-        //score.setText(String.valueOf(Integer.parseInt(score.getText().toString())+2*0.25));
+        score.setText(String.valueOf(Double.parseDouble(score.getText().toString())+2*0.25));
     }
     public void touch(View view) {
         Intent intent=new Intent();
@@ -75,7 +82,7 @@ public class PetHomeActivity extends AppCompatActivity {
         toast.setGravity(Gravity.TOP|Gravity.RIGHT, -10, 10);
         toast.show();
         progressBar4.setProgress(progressBar4.getProgress()+3);
-        //score.setText(String.valueOf(Integer.parseInt(score.getText().toString())+3*0.25));
+        score.setText(String.valueOf(Double.parseDouble(score.getText().toString())+3*0.25));
     }
 
     public void show(View view) {
@@ -106,7 +113,7 @@ public class PetHomeActivity extends AppCompatActivity {
         toast.setGravity(Gravity.TOP|Gravity.RIGHT, -10, 10);
         toast.show();
         progressBar.setProgress(progressBar.getProgress()-1);
-        //score.setText(String.valueOf(Integer.parseInt(score.getText().toString())+1*0.25));
+        score.setText(String.valueOf(Double.parseDouble(score.getText().toString())+1*0.25));
     }
 
     public void drink(View view) {
@@ -131,7 +138,7 @@ public class PetHomeActivity extends AppCompatActivity {
         toast.setGravity(Gravity.TOP|Gravity.RIGHT, -10, 10);
         toast.show();
         progressBar2.setProgress(progressBar2.getProgress()+3);
-        //score.setText(String.valueOf(Integer.parseInt(score.getText().toString())+3*0.25));
+        score.setText(String.valueOf(Double.parseDouble(score.getText().toString())+3*0.25));
     }
 
     public void bath(View view) {
@@ -156,7 +163,7 @@ public class PetHomeActivity extends AppCompatActivity {
         toast.setGravity(Gravity.TOP|Gravity.RIGHT, -10, 10);
         toast.show();
         progressBar3.setProgress(progressBar3.getProgress()+3);
-        //score.setText(String.valueOf(Integer.parseInt(score.getText().toString())+3*0.25));
+        score.setText(String.valueOf(Double.parseDouble(score.getText().toString())+3*0.25));
     }
 
     public void vac(View view) {
@@ -181,7 +188,7 @@ public class PetHomeActivity extends AppCompatActivity {
         toast.setGravity(Gravity.TOP|Gravity.RIGHT, -10, 10);
         toast.show();
         progressBar2.setProgress(progressBar2.getProgress()+5);
-        //score.setText(String.valueOf(Integer.parseInt(score.getText().toString())+5*0.25));
+        score.setText(String.valueOf(Double.parseDouble(score.getText().toString())+5*0.25));
     }
 
     public void play(View view) {
@@ -207,7 +214,7 @@ public class PetHomeActivity extends AppCompatActivity {
         toast.setGravity(Gravity.TOP|Gravity.RIGHT, -10, 10);
         toast.show();
         progressBar4.setProgress(progressBar4.getProgress()+5);
-        //score.setText(String.valueOf(Integer.parseInt(score.getText().toString())+5*0.25));
+        score.setText(String.valueOf(Double.parseDouble(score.getText().toString())+5*0.25));
     }
 
     public void toPage(View view) {

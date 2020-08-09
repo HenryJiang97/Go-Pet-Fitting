@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,6 +35,7 @@ import java.util.List;
 
 public class UserPageActivity extends AppCompatActivity {
     private User user;
+    private Pet pet;
     private static final int CAMERA_REQUEST = 1888;
     private ImageView imageView;
     private Button petHome;
@@ -47,6 +49,7 @@ public class UserPageActivity extends AppCompatActivity {
     private Uri imageUri;
     private String photoFrom = "change photo";
     private TextView coins;
+    private TextView name;
     private boolean hasCheck;
     int duration = Toast.LENGTH_SHORT;
     CharSequence text;
@@ -55,10 +58,16 @@ public class UserPageActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user);
+        user =(User)getIntent().getSerializableExtra("user");
+        Log.d("userpass: ", user.getName());
+        name = (TextView) findViewById(R.id.textView25);
+        name.setText(user.getName());
+        pet = new Pet(user.getPetName(), user.getPetType());
+        Log.d("petpass: ", pet.getPetName());
         coins = (TextView) findViewById(R.id.textView22);
         petHome = (Button)findViewById(R.id.button4);
         hasCheck = false;
-        user = new User();
+        //user = new User();
         this.imageView = (ImageView) this.findViewById(R.id.userImage);
         this.spinner = (Spinner) findViewById(R.id.changePhoto);
         this.photoChoice = new ArrayList<String>() {{
@@ -212,9 +221,12 @@ public class UserPageActivity extends AppCompatActivity {
         coins.setText(String.valueOf(Integer.parseInt(coins.getText().toString())+1));
     }
     public void toPet(View view) {
-        Intent intent=new Intent();
-        intent.setClass(UserPageActivity.this, PetHomeActivity.class);
+        Intent intent = new Intent(getBaseContext(), PetHomeActivity.class);
+        intent.putExtra("pet", pet);
         startActivity(intent);
+//        Intent intent=new Intent();
+//        intent.setClass(UserPageActivity.this, PetHomeActivity.class);
+//        startActivity(intent);
     }
 }
 

@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">GoPetFitting</string>
 
-    <!-- Signup -->
+    <!-- Log in -->
+    <string name="login">User Log In</string>
+    <string name="login_button">Log In</string>
+    <string name="signup_login">Do not have an account? Create one.</string>
+
+    <!-- Sign up -->
     <string name="signup">User Sign Up</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
@@ -9,11 +14,29 @@
     <string name="signUpButton">Sign Up</string>
 
     <!-- Personal info -->
+    <string name="personal_info">More About You</string>
     <string name="age">Age</string>
     <string name="sex">Sex</string>
     <string name="height">Height</string>
     <string name="weight">Weight</string>
+    <string name="target_weight">Target Weight</string>
+    <string name="petName">Pet Name</string>
+    <string name="petType">Pet Type</string>
+    <string name="target_w">Target\nWeight</string>
     <string name="submit">Submit</string>
+
+    <!-- Exercise -->
+    <string name="exercise">Exercise</string>
+    <string name="steps">Steps</string>
+    <string name="distance">Distance</string>
+    <string name="calories">Calories Burned</string>
+    <string name="time">Exercise Time</string>
+    <string name="initVal"></string>
+
+    <string name="record">Record</string>
+    <string name="stop">Stop</string>
+
+    <string name="api_key">AIzaSyCikSnL3XPDA6-WpP61pNdpvXqL2Boa6NE</string>
 <!--    change profile photo choices-->
     <string-array name="photoArr">
         <item> </item>

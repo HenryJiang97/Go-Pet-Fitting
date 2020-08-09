@@ -1,30 +1,23 @@
 package com.example.gopetfitting;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.provider.MediaStore;
+import android.util.Log;
 
-import androidx.core.content.FileProvider;
+import androidx.annotation.NonNull;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.sql.Timestamp;
-import java.util.List;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.Serializable;
 import java.util.UUID;
-import java.util.concurrent.TimeoutException;
 
-import static androidx.core.app.ActivityCompat.startActivityForResult;
+public class User implements Serializable {
+    private static String TAG = "ADD TO DATABASE";
 
-public class User {
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_TAKE_PHOTO = 1;
     // Basic login info
-    private Timestamp createTime;
-    private UUID userId;
-    private UUID imageId;
-    private String localImage; // the location path where user store image
+    private String userId;
+//    private UUID imageId;
     private String name;
     private String email;
 
@@ -34,7 +27,6 @@ public class User {
     private double height;
     private double weight;
     private double targetWeight;
-    private int completeWeeks;
     private int targetCaloriesLoss;
 
     // Intake
@@ -42,58 +34,135 @@ public class User {
     private int caloriesIntake;
 
     // Activity
-//    private List<UUID> activityIds;
     private long totalExerciseTime;
     private int completedWeeks;
+    private String activityId;
 
     // Pet
-    private UUID petId;
+    private String petId;
+    private String petName;
+    private PetType petType;
     private int coins;
     private int checkInDays;
-    // 0 < beatRank < 1
-    private double beatRank;
-    // for pets
-    private int haveFood;
-    private int haveWater;
-    private int haveVaccination;
-    private int haveToys;
 
-    public User(String name, String email, int age, Sex sex, double height, double weight, double targetWeight, boolean create) {
-        if (create) {
-            this.createTime = new Timestamp(System.currentTimeMillis());
-            this.imageId = UUID.randomUUID();
-            this.localImage = null;
-        }
-        System.out.printf("\ncreateTime is: %s\n", this.createTime.toString());
-        this.userId = UUID.randomUUID();
+    // Score
+    private int score;
+    // photo
+    private String localImage; // the location path where user store image
+
+    public User(String uid, String name, String email) {
+        this.userId = uid;
         this.name = name;
         this.email = email;
+        this.lostCalories = 0;
+        this.caloriesIntake = 0;
+        this.targetCaloriesLoss = calculateTargetCaloriesLoss();
+        this.totalExerciseTime = 0;
+        this.completedWeeks = 0;
+        this.petId = String.valueOf(UUID.randomUUID());
+        this.coins = 0;
+        this.checkInDays = 0;
+        this.score = 0;
+        this.activityId = "";
+    }
+
+    public User(String uid, String name, String email,
+                int age, Sex sex, double height, double weight, double targetWeight, int targetCaloriesLoss, String petName, PetType petType) {
+        this.userId = uid;
+        this.name = name;
+        this.email = email;
+        this.lostCalories = 0;
+        this.caloriesIntake = 0;
+        this.targetCaloriesLoss = calculateTargetCaloriesLoss();
+        this.totalExerciseTime = 0;
+        this.completedWeeks = 0;
+        this.petId = String.valueOf(UUID.randomUUID());
+        this.coins = 0;
+        this.checkInDays = 0;
+        this.score = 0;
         this.age = age;
         this.sex = sex;
         this.height = height;
         this.weight = weight;
         this.targetWeight = targetWeight;
-        this.lostCalories = 0;
-        this.caloriesIntake = 0;
-        this.targetCaloriesLoss = calculateTargetCaloriesLoss(weight, targetWeight);
-       // this.activityIds = new ArrayList<>();
-        this.totalExerciseTime = 0;
-        this.completedWeeks = 0;
-        this.petId = UUID.randomUUID();
-        this.coins = 0;
-        this.checkInDays = 0;
+        this.targetCaloriesLoss = targetCaloriesLoss;
+        this.petName = petName;
+        this.petType = petType;
+        this.activityId = "";
     }
 
-    public User() {
-        this.createTime = new Timestamp(System.currentTimeMillis());
+    // Setters
+    public void setAge(int age) {
+        this.age = age;
     }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public void setTargetWeight(double targetWeight) {
+        this.targetWeight = targetWeight;
+    }
+
+    public void setPetName(String petName) {
+        this.petName = petName;
+    }
+
+    public void setPetType(PetType petType) {
+        this.petType = petType;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setCompletedWeeks(int completedWeeks) {
+        this.completedWeeks = completedWeeks;
+    }
+
+    public void setCaloriesIntake(int caloriesIntake) {
+        this.caloriesIntake = caloriesIntake;
+    }
+
+    public void setCheckInDays(int checkInDays) {
+        this.checkInDays = checkInDays;
+    }
+
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
+    public void setPetId(String petId) {
+        this.petId = petId;
+    }
+
+    public void setTotalExerciseTime(long totalExerciseTime) {
+        this.totalExerciseTime = totalExerciseTime;
+    }
+
+    public void setLostCalories(int lostCalories) {
+        this.lostCalories = lostCalories;
+    }
+
+    public void addScore(int delta) {
+        this.score += delta;
+    }
+
 
     // Getters
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public UUID getUserId() {
+    public String getUserId() {
         return userId;
     }
 
@@ -121,7 +190,8 @@ public class User {
         return weight;
     }
 
-    public UUID getPetId() {
+
+    public String getPetId() {
         return petId;
     }
 
@@ -157,106 +227,49 @@ public class User {
         return targetCaloriesLoss;
     }
 
-    public String getLocalImage() {
-        return this.localImage;
+    public String getPetName() {
+        return petName;
     }
+
+    public PetType getPetType() {
+        return petType;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
 
     // Methods
 
     // TODO: Implement the method to calculate target calories loss for the user
-    private int calculateTargetCaloriesLoss(double _weight, double _targetWeight) {
+    private int calculateTargetCaloriesLoss() {
         return 0;
     }
 
-    public void setImageId(UUID imageId) {
-        this.imageId = imageId;
+
+    // Add user to database
+    public void addToDB() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users")
+                .add(this)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding activity", e);
+                    }
+                });
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getLocalImage() {
+        return this.localImage;
     }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setSex(Sex sex) {
-        this.sex = sex;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-    public void setTargetWeight(double targetWeight) {
-        this.targetWeight = targetWeight;
-    }
-
-    public void setCompleteWeeks(int completeWeeks) {
-        this.completeWeeks = completeWeeks;
-    }
-
-    public void setTargetCaloriesLoss(int targetCaloriesLoss) {
-        this.targetCaloriesLoss = targetCaloriesLoss;
-    }
-
-    public void setLostCalories(int lostCalories) {
-        this.lostCalories = lostCalories;
-    }
-
-    public void setCaloriesIntake(int caloriesIntake) {
-        this.caloriesIntake = caloriesIntake;
-    }
-
-
-    public void setTotalExerciseTime(long totalExerciseTime) {
-        this.totalExerciseTime = totalExerciseTime;
-    }
-
-    public void setCompletedWeeks(int completedWeeks) {
-        this.completedWeeks = completedWeeks;
-    }
-
-    public void setPetId(UUID petId) {
-        this.petId = petId;
-    }
-
-    public void setCoins(int coins) {
-        this.coins = coins;
-    }
-
-    public void setCheckInDays(int checkInDays) {
-        this.checkInDays = checkInDays;
-    }
-
-    public void setBeatRank(double beatRank) {
-        this.beatRank = beatRank;
-    }
-
-    public void setHaveFood(int haveFood) {
-        this.haveFood = haveFood;
-    }
-
-    public void setHaveWater(int haveWater) {
-        this.haveWater = haveWater;
-    }
-
-    public void setHaveVaccination(int haveVaccination) {
-        this.haveVaccination = haveVaccination;
-    }
-
-    public void setHaveToys(int haveToys) {
-        this.haveToys = haveToys;
-    }
-
     public void setLocalImage(String loc) {
         this.localImage = loc;
     }
