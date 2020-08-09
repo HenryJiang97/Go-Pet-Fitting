@@ -20,7 +20,6 @@ public class Activity implements Serializable {
     private double distance;
     private int burnedCalories;
     private double speed;
-
     public Activity(String id, long startTime, long exerciseTime, int steps, double distance, int burnedCalories) {
         this.activityId = id;
         this.steps = steps;

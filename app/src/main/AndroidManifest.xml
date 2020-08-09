@@ -33,10 +33,19 @@
         <activity android:name=".PetHomeActivity" />
         <activity android:name=".DogWalkActivity" />
         <activity android:name=".MultiaudioActivity" />
-        <activity android:name=".UserPageActivity" />
-        <activity android:name=".Login" />
         <activity android:name=".Exercise" />
+        <activity android:name=".Login" />
+        <activity android:name=".UserPageActivity" />
         <activity android:name=".PersonalInfo" />
+        <activity android:name=".Summary" />
+        <activity android:name=".IndoorExercise" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCikSnL3XPDA6-WpP61pNdpvXqL2Boa6NE"/>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

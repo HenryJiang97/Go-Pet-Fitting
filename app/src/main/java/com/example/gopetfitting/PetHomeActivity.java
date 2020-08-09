@@ -43,8 +43,12 @@ public class PetHomeActivity extends AppCompatActivity {
         setContentView(R.layout.pet_home);
         name = (TextView) findViewById(R.id.textView27);
         pet = (Pet)getIntent().getSerializableExtra("pet");
-        Log.d("pet name set: ", pet.getPetName());
-        name.setText(pet.getPetName());
+        if(pet == null) {
+            name.setText("888");
+        }//Log.d("pet name set: ", pet.getPetName());
+        else {
+            name.setText(String.valueOf(pet.getPetName()));
+        }
         myPage = (Button) findViewById(R.id.button9);
         iv = (ImageView)findViewById(R.id.imageView8);
         iv2 = (ImageView)findViewById(R.id.imageView12);

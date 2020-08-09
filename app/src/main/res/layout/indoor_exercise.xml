@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -125,33 +126,17 @@
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/map_exercise"
-        android:layout_width="392dp"
-        android:layout_height="369dp"
+    <Button
+        android:id="@+id/video_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="190dp"
         android:layout_marginBottom="20dp"
-        android:apiKey="@string/api_key"
+        android:text="Play Video"
         app:layout_constraintBottom_toTopOf="@+id/record_exercise"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/myLocationButton_exercise"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:src="@android:drawable/ic_menu_mylocation"
-        app:borderWidth="0dp"
-        app:elevation="6dp"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="@+id/map_exercise"
-        app:layout_constraintEnd_toEndOf="@+id/map_exercise"
-        app:pressedTranslationZ="12dp"
-        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/record_exercise"
@@ -166,6 +151,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

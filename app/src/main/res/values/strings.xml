@@ -35,13 +35,17 @@
 
     <string name="record">Record</string>
     <string name="stop">Stop</string>
-
-    <string name="api_key">AIzaSyCikSnL3XPDA6-WpP61pNdpvXqL2Boa6NE</string>
 <!--    change profile photo choices-->
     <string-array name="photoArr">
         <item> </item>
         <item>take photo</item>
         <item>choose from gallery</item>
     </string-array>
+    <!-- Summary -->
+    <string name="summary">Summary</string>
+    <string name="exerciseTime">Exercise Time</string>
+    <string name="speed">Speed</string>
+    <string name="return_to_profile">Return To Profile</string>
 
+    <string name="api_key">AIzaSyCikSnL3XPDA6-WpP61pNdpvXqL2Boa6NE</string>
 </resources>

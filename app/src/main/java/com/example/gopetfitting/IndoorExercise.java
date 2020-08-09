@@ -1,5 +1,6 @@
 package com.example.gopetfitting;
 
+import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -9,25 +10,42 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.net.sip.SipSession;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.data.DataPoint;
+import com.google.android.gms.fitness.data.DataSource;
+import com.google.android.gms.fitness.data.DataType;
+import com.google.android.gms.fitness.request.DataSourcesRequest;
 import com.google.android.gms.fitness.request.OnDataPointListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,20 +53,26 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+
+import java.net.URI;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
-public class Exercise extends AppCompatActivity implements
-        OnDataPointListener,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener
-{
-    private static final String TAG = "Exercise Activity";
 
-    private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = 1;
+public class IndoorExercise extends AppCompatActivity {
+
+    private static final String TAG = "Indoor Exercise Activity";
+
     private final String MAPVIEW_BUNDLE_KEY = "1";
     private static final String AUTH_PENDING = "auth_state_pending";
     private static final int REQUEST_OAUTH = 1;
@@ -59,10 +83,9 @@ public class Exercise extends AppCompatActivity implements
     private TextView distanceTV;
     private TextView caloriesTV;
     private TextView timeTV;
-    private MapView mapView;
-    private GoogleMap map;
     private Button recordBT;
-    private FloatingActionButton myLocationBT;
+
+    private Button videoBT;
 
     private GoogleApiClient apiClient;
     private boolean authInProgress = false;
@@ -99,12 +122,11 @@ public class Exercise extends AppCompatActivity implements
     private String activityId;
     private Activity activity;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.exercise);
+        setContentView(R.layout.indoor_exercise);
 
         // Initialize variables
         stepsTV = findViewById(R.id.steps_exercise);
@@ -112,77 +134,18 @@ public class Exercise extends AppCompatActivity implements
         caloriesTV = findViewById(R.id.calories_exercise);
         timeTV = findViewById(R.id.time_exercise);
         recordBT = findViewById(R.id.record_exercise);
-        myLocationBT = findViewById(R.id.myLocationButton_exercise);
-        mapView = findViewById(R.id.map_exercise);
+        videoBT = findViewById(R.id.video_button);
         isRecording = false;
         handler = new Handler();
         distance = 0.0;
         steps = 0;
         calories = 0;
 
-        // Check location permission
-        if (ActivityCompat.checkSelfPermission(Exercise.this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(Exercise.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(Exercise.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
-        } else {
-            // Set up google map service
-            mapView.onCreate(savedInstanceState);
-            mapView.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap googleMap) {
-                    map = googleMap;
-                    map.getUiSettings().setMyLocationButtonEnabled(false);
-
-                    // Check my location permission
-                    if (ActivityCompat.checkSelfPermission(Exercise.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Exercise.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(Exercise.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                        return;
-                    }
-
-                    map.setMyLocationEnabled(true);
-                    getCurrentLocation();
-                }
-            });
-
-
-        }
-
-
-        // TODO: Set google fit api
-//        // Set Google API client
-//        if (savedInstanceState != null) {
-//            authInProgress = savedInstanceState.getBoolean(AUTH_PENDING);
-//        }
-//
-//        apiClient = new GoogleApiClient.Builder(Exercise.this)
-//                .addApi(Fitness.SENSORS_API)
-//                .addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
-//                .addConnectionCallbacks(Exercise.this)
-//                .addOnConnectionFailedListener(Exercise.this)
-//                .build();
-//
-//
-//        // Define google fit api
-//        fitnessOptions = FitnessOptions.builder()
-//                .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
-//                .addDataType(DataType.TYPE_STEP_COUNT_CUMULATIVE, FitnessOptions.ACCESS_READ)
-//                .addDataType(DataType.TYPE_STEP_COUNT_CADENCE, FitnessOptions.ACCESS_READ)
-//                .addDataType(DataType.TYPE_CALORIES_EXPENDED, FitnessOptions.ACCESS_READ)
-//                .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
-//                .build();
-//
-//        account = GoogleSignIn.getAccountForExtension(this, fitnessOptions);
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mapView.onStart();
         initVal();
 
         user = (User)getIntent().getSerializableExtra("user");
@@ -191,19 +154,6 @@ public class Exercise extends AppCompatActivity implements
         // Init locationManager and locationListener
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         locationListener = new MyLocationListener();
-
-
-//        apiClient.connect();
-
-        // Check Google fitness permission
-//        if (!GoogleSignIn.hasPermissions(account, fitnessOptions)) {
-//            GoogleSignIn.requestPermissions(
-//                    Exercise.this,
-//                    GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
-//                    account,
-//                    fitnessOptions);
-//        }
-
 
 
         // Change the button state
@@ -251,11 +201,11 @@ public class Exercise extends AppCompatActivity implements
                     handler.postDelayed(runnable2,5000);
 
                     // Check for permission
-                    if (ActivityCompat.checkSelfPermission(Exercise.this,
+                    if (ActivityCompat.checkSelfPermission(IndoorExercise.this,
                             Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                            ActivityCompat.checkSelfPermission(Exercise.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                            ActivityCompat.checkSelfPermission(IndoorExercise.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                     {
-                        ActivityCompat.requestPermissions(Exercise.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                        ActivityCompat.requestPermissions(IndoorExercise.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                         return;
                     }
 
@@ -273,123 +223,14 @@ public class Exercise extends AppCompatActivity implements
         });
 
 
-
-        // Tap the my location button (Get my current location and zoom)
-        myLocationBT.setOnClickListener(new View.OnClickListener() {
+        videoBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getCurrentLocation();
+                playVideo();
             }
         });
 
-
-
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mapView.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-
-        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
-        if (mapViewBundle == null) {
-            mapViewBundle = new Bundle();
-            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
-        }
-
-        mapView.onSaveInstanceState(mapViewBundle);
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        if( !authInProgress ) {
-            try {
-                authInProgress = true;
-                connectionResult.startResolutionForResult( Exercise.this, REQUEST_OAUTH );
-            } catch(IntentSender.SendIntentException e ) {
-
-            }
-        } else {
-            Log.e( "GoogleFit", "authInProgress" );
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if( requestCode == REQUEST_OAUTH ) {
-            authInProgress = false;
-            if( resultCode == RESULT_OK ) {
-                if( !apiClient.isConnecting() && !apiClient.isConnected() ) {
-                    apiClient.connect();
-                }
-            } else if( resultCode == RESULT_CANCELED ) {
-                Log.e( "GoogleFit", "RESULT_CANCELED" );
-            }
-        } else {
-            Log.e("GoogleFit", "requestCode NOT request_oauth");
-        }
-
-    }
-
-    @Override
-    public void onDataPoint(DataPoint dataPoint) {
-
-    }
-
-    // Get current location and zoom in the map
-    private void getCurrentLocation() {
-        LatLng myLocation;
-        Location location = map.getMyLocation();
-
-        if(location != null) {
-            final double latitude = location.getLatitude();
-            final double longitude = location.getLongitude();
-            myLocation = new LatLng(latitude, longitude);
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-                    15));
-        }
-    }
-
 
     // Init value
     private void initVal() {
@@ -511,6 +352,8 @@ public class Exercise extends AppCompatActivity implements
     private int addScore() {
         return (int)(calories * steps * distance * exerciseTime / (int)(1e11));
     }
+
+    // Calories calculator based on exercise
     private void getCaloriesBurned() {
         int MET = 8;
         int cal = (int)(exerciseTime / 10 * (MET * 3.5 * 55) / 200);
@@ -521,21 +364,23 @@ public class Exercise extends AppCompatActivity implements
 
     // Add marker on the map
     private void addMarker(String name) {
-        if (ActivityCompat.checkSelfPermission(Exercise.this,
+        if (ActivityCompat.checkSelfPermission(IndoorExercise.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(Exercise.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                ActivityCompat.checkSelfPermission(IndoorExercise.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
-            ActivityCompat.requestPermissions(Exercise.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            ActivityCompat.requestPermissions(IndoorExercise.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             return;
         }else{
             // Got permission
-            LocationManager lm = (LocationManager) Exercise.this.getSystemService(getBaseContext().LOCATION_SERVICE);
+            LocationManager lm = (LocationManager)IndoorExercise.this.getSystemService(getBaseContext().LOCATION_SERVICE);
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            map.addMarker(new MarkerOptions().position(latLng).title(name));
         }
     }
 
-
-
+    // Play video
+    private void playVideo() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=JEX5LtXCCf4"));
+        startActivity(browserIntent);
+    }
 }
