@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+// dog walk activity
 public class DogWalkActivity extends AppCompatActivity {
     private Button btn_play,btn_pause;
     private ImageView iv;
