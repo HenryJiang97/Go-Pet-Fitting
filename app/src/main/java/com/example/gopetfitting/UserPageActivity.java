@@ -3,6 +3,7 @@ package com.example.gopetfitting;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -10,10 +11,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,12 +34,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.example.gopetfitting.User.REQUEST_IMAGE_CAPTURE;
-
-public class UserPage extends AppCompatActivity {
+public class UserPageActivity extends AppCompatActivity {
     private User user;
+    private Pet pet;
+    //private ImageView outdoor;
     private static final int CAMERA_REQUEST = 1888;
     private ImageView imageView;
+    private Button petHome;
+    private EditText age;
+    private EditText weight;
+    private EditText height;
+    private EditText target;
+    private EditText weeks;
+    private TextView loseTotal;
+    private TextView finished;
+    private TextView todo;
+    private TextView add;
+    private com.example.gopetfitting.Activity exercise;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     private Spinner spinner;
     private List<String> photoChoice;
@@ -45,12 +60,95 @@ public class UserPage extends AppCompatActivity {
     private static final int PICK_IMAGE = 100;
     private Uri imageUri;
     private String photoFrom = "change photo";
+    private TextView coins;
+    private TextView name;
+    private boolean hasCheck;
+    int duration = Toast.LENGTH_SHORT;
+    CharSequence text;
+    Toast toast;
+    @Override
+    public void onStart() {
+        super.onStart();
+        user =(User)getIntent().getSerializableExtra("user");
+        name = (TextView) findViewById(R.id.textView25);
+        if(user == null) {
+            Log.d("user == null", "1");
+            name.setText("alice");
+            age = (EditText)findViewById(R.id.age);
+            age.setText("22");
+            height = (EditText) findViewById(R.id.height);
+            height.setText("170");
+            weight = (EditText) findViewById(R.id.weight);
+            weight.setText("120");
+            target = (EditText) findViewById(R.id.target);
+            target.setText("100");
+            weeks = (EditText) findViewById(R.id.weeks);
+            weeks.setText("8");
+            finished = (TextView) findViewById(R.id.textView15);
+            finished.setText("0");
+        }
+        //Log.d("userpass: ", user.getName());
+        if(user != null) {
+            Log.d("userage: ", String.valueOf(user.getAge()));
+//            name.setText("alice");
+//            age = (EditText)findViewById(R.id.age);
+//            age.setText("22");
+//            height = (EditText) findViewById(R.id.height);
+//            height.setText("170");
+//            weight = (EditText) findViewById(R.id.weight);
+//            weight.setText("120");
+//            target = (EditText) findViewById(R.id.target);
+//            target.setText("100");
+//            weeks = (EditText) findViewById(R.id.weeks);
+//            weeks.setText("8");
+//            finished = (TextView) findViewById(R.id.textView15);
+//            finished.setText("146");
+            name.setText(user.getName());
+            age = (EditText)findViewById(R.id.age);
+            age.setText(String.valueOf(user.getAge()));
+            Log.d("username is:", user.getName());
+            height = (EditText) findViewById(R.id.height);
+            height.setText(String.valueOf(user.getHeight()));
+            weight = (EditText) findViewById(R.id.weight);
+            weight.setText(String.valueOf(user.getWeight()));
+            target = (EditText) findViewById(R.id.target);
+            target.setText(String.valueOf(user.getTargetWeight()));
+            weeks = (EditText) findViewById(R.id.weeks);
+            weeks.setText(String.valueOf(user.getCompletedWeeks()));
+            finished = (TextView) findViewById(R.id.textView15);
+            finished.setText("0");
+        }
+        exercise = (com.example.gopetfitting.Activity)getIntent().getSerializableExtra("activity");
+        //Log.d("exercise: ", String.valueOf(exercise.getBurnedCalories()));
+        coins = (TextView) findViewById(R.id.textView22);
+        if(exercise != null) {
 
+            finished.setText(String.valueOf(Integer.parseInt(finished.getText().toString())+exercise.getBurnedCalories()));
+            coins.setText(String.valueOf(Integer.parseInt(coins.getText().toString())+(int)(exercise.getBurnedCalories()/10)));
+        }
+        loseTotal = (TextView)findViewById(R.id.textView12);
+        loseTotal.setText("1453");
+        todo = (TextView)findViewById(R.id.textView17);
+        todo.setText(String.valueOf(Integer.parseInt(loseTotal.getText().toString())-Integer.parseInt(finished.getText().toString())));
+        if(user != null) {
+            pet = new Pet(user.getPetName(), user.getPetType());
+        }
+        //Log.d("petpass: ", pet.getPetName());
+        petHome = (Button)findViewById(R.id.button4);
+        hasCheck = false;
+        //outdoor = (ImageView) findViewById(R.id.imageView3);
+        //user = new User();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user);
         user = new User();
+//        age = (EditText)findViewById(R.id.age);
+//        age.setText("22");
+        ////////////////////////////////////
+        //outdoor = (ImageView) findViewById(R.id.imageView3);
+        //user = new User();
         this.imageView = (ImageView) this.findViewById(R.id.userImage);
         this.spinner = (Spinner) findViewById(R.id.changePhoto);
         this.photoChoice = new ArrayList<String>() {{
@@ -70,7 +168,7 @@ public class UserPage extends AppCompatActivity {
                                        int pos, long id) {
 
                 String[] photoChoices = getResources().getStringArray(R.array.photoArr);
-                Toast.makeText(UserPage.this, "You click:" + photoChoices[pos], Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserPageActivity.this, "You click:" + photoChoices[pos], Toast.LENGTH_SHORT).show();
                 if ("take photo".equals(photoChoices[pos])) {
                     System.out.println("choose take photo");
                     photoFrom = "take photo";
@@ -156,6 +254,7 @@ public class UserPage extends AppCompatActivity {
             }
             pictureFilePath = image.getAbsolutePath();
             System.out.println("pictureFilePath " + pictureFilePath);
+            user = new User();
             if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
                 File imgFile = new File(pictureFilePath);
                 System.out.println("imgFile is: " + imgFile.toString());
@@ -168,6 +267,7 @@ public class UserPage extends AppCompatActivity {
                 System.out.println("localimage is: " + user.getLocalImage());
             }
         } else if ("choose from gallery".equals(photoFrom)) {
+            user = new User();
             if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
                 imageUri = data.getData();
                 imageView.setImageURI(imageUri);
@@ -192,6 +292,53 @@ public class UserPage extends AppCompatActivity {
         gallery.setType("image/*");
         gallery.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(gallery, PICK_IMAGE);
+    }
+
+    public void checkin(View view) {
+        if(hasCheck) return;
+        text = "coin +1";
+        Context context = getApplicationContext();
+        toast = Toast.makeText(context, text, duration);
+        toast.setGravity(Gravity.TOP|Gravity.LEFT, 0, 0);
+        toast.show();
+        coins.setText(String.valueOf(Integer.parseInt(coins.getText().toString())+1));
+    }
+    public void toPet(View view) {
+        Intent intent = new Intent(getBaseContext(), PetHomeActivity.class);
+        intent.putExtra("pet", pet);
+        startActivity(intent);
+//        Intent intent=new Intent();
+//        intent.setClass(UserPageActivity.this, PetHomeActivity.class);
+//        startActivity(intent);
+    }
+    public void toOurdoor(View view) {
+        Intent intent=new Intent();
+        intent.setClass(UserPageActivity.this, Exercise.class);
+        startActivity(intent);
+    }
+    public void toIndoor(View view) {
+        Intent intent=new Intent();
+        intent.setClass(UserPageActivity.this, IndoorExercise.class);
+        startActivity(intent);
+    }
+
+    public void toMoments(View view) {
+        Intent intent=new Intent();
+        intent.setClass(UserPageActivity.this, MomentsActivity.class);
+        startActivity(intent);
+    }
+
+    public void toPetStore(View view) {
+        Intent intent=new Intent();
+        intent.setClass(UserPageActivity.this, PetStoreActivity.class);
+        startActivity(intent);
+    }
+
+    public void add(View view) {
+        add = (EditText)findViewById(R.id.snack);
+        int toadd = Integer.parseInt(add.getText().toString());
+        loseTotal.setText(String.valueOf(toadd+Integer.parseInt(loseTotal.getText().toString())));
+        todo.setText(String.valueOf(toadd+Integer.parseInt(todo.getText().toString())));
     }
 }
 

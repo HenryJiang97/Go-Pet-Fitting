@@ -1,5 +1,6 @@
 package com.example.gopetfitting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,9 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 
 public class Signup extends AppCompatActivity {
-    private static final String TAG = "Signup Activity";
+    private static final String TAG = "Sign Up Activity";
 
-    private FirebaseUser user;
+    private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
     private EditText nameET;
     private EditText emailET;
@@ -50,27 +51,40 @@ public class Signup extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Signup.this, "Sign up clicked", Toast.LENGTH_SHORT).show();
-                createNewUser(emailET.getText().toString(), passwordET.getText().toString());
+                register(emailET.getText().toString(), passwordET.getText().toString());
 
             }
         });
     }
 
     // Method to create new user in Firebase Authentication
-    private void createNewUser(String email, String password) {
+    private void register(final String email, String password) {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                            // Sign up success, update UI with the signed-in user's information
                             Log.d(TAG, "createUser:success");
-                            user = auth.getCurrentUser();
+                            firebaseUser = auth.getCurrentUser();
+                            Log.d(TAG, "User: " + firebaseUser.getEmail());
+                            Toast.makeText(Signup.this, "Signup successfully", Toast.LENGTH_SHORT).show();
 
-                            Log.d(TAG, "User: " + user.getEmail());
+                            System.out.println("User id: " + firebaseUser.getUid());
+                            System.out.println("User email: " + firebaseUser.getEmail());
+
+
+                            // Go to personal info page
+                            Intent intent = new Intent(getBaseContext(), PersonalInfo.class);
+                            intent.putExtra("name", nameET.getText().toString());
+                            intent.putExtra("email", email);
+                            intent.putExtra("uid", firebaseUser.getUid());
+                            startActivity(intent);
+
+                            //
+
                         } else {
-                            // If sign in fails, display a message to the user.
+                            // If sign up fails, display a message to the user.
                             Log.w(TAG, "createUser:failure", task.getException());
                             Toast.makeText(Signup.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -79,6 +93,4 @@ public class Signup extends AppCompatActivity {
                     }
                 });
     }
-
-
 }

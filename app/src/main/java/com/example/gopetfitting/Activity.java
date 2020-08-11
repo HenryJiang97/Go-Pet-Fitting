@@ -1,35 +1,40 @@
 package com.example.gopetfitting;
 
-import java.sql.Timestamp;
-import java.util.UUID;
+import android.util.Log;
 
-public class Activity {
+import androidx.annotation.NonNull;
 
-    private UUID activityId;
-    private Timestamp startTime;
-    private boolean ifCompleted;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.Serializable;
+
+public class Activity implements Serializable {
+    private static String TAG = "ADD TO DATABASE";
+
+    private String activityId;
+    private long startTime;
+    private long exerciseTime;
     private int steps;
     private double distance;
     private int burnedCalories;
     private double speed;
-
-    public Activity() {
-        this.activityId = UUID.randomUUID();
-        this.ifCompleted = false;
-        this.steps = 0;
-        this.distance = 0.0;
-        this.burnedCalories = 0;
-        this.startTime = new Timestamp(System.currentTimeMillis());
-        this.speed = 0.0;
+    public Activity(String id, long startTime, long exerciseTime, int steps, double distance, int burnedCalories) {
+        this.activityId = id;
+        this.steps = steps;
+        this.distance = distance;
+        this.burnedCalories = burnedCalories;
+        this.exerciseTime = exerciseTime;
+        this.startTime = startTime;
+        this.speed = getSpeed();
     }
 
     // Getters
-    public UUID getActivityId() {
-        return activityId;
-    }
 
-    public boolean getIfCompleted() {
-        return ifCompleted;
+
+    public String getActivityId() {
+        return activityId;
     }
 
     public int getSteps() {
@@ -44,11 +49,37 @@ public class Activity {
         return burnedCalories;
     }
 
-    public Timestamp getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
+    public long getExerciseTime() {
+        return exerciseTime;
+    }
+
+
+    // Get average speed of the exercise (m / s)
     public double getSpeed() {
-        return speed;
+        return (double)distance / exerciseTime;
+    }
+
+    // Method to add this activity to database
+    public void addToDB() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("activities")
+                .document(activityId)
+                .set(this)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding activity", e);
+                    }
+                });
     }
 }

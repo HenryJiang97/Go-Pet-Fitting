@@ -10,6 +10,7 @@
         android:id="@+id/touch"
         android:layout_width="367dp"
         android:layout_height="435dp"
+        android:onClick="touch"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,12 +21,24 @@
         android:id="@+id/textView34"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+Happiness:"
+        android:layout_marginStart="72dp"
+        android:text="+ Happiness:"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.127"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/touch"
-        app:layout_constraintVertical_bias="0.503" />
+        app:layout_constraintVertical_bias="0.535" />
+
+    <TextView
+        android:id="@+id/textView48"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:text="0"
+        android:textColor="#F44336"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="@+id/touch"
+        app:layout_constraintHorizontal_bias="0.286"
+        app:layout_constraintStart_toEndOf="@+id/textView34"
+        app:layout_constraintTop_toBottomOf="@+id/touch" />
 </androidx.constraintlayout.widget.ConstraintLayout>
