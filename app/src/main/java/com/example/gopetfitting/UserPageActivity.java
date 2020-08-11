@@ -49,6 +49,7 @@ public class UserPageActivity extends AppCompatActivity {
     private TextView loseTotal;
     private TextView finished;
     private TextView todo;
+    private TextView add;
     private com.example.gopetfitting.Activity exercise;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     private Spinner spinner;
@@ -115,7 +116,7 @@ public class UserPageActivity extends AppCompatActivity {
             weeks = (EditText) findViewById(R.id.weeks);
             weeks.setText(String.valueOf(user.getCompletedWeeks()));
             finished = (TextView) findViewById(R.id.textView15);
-            finished.setText("146");
+            finished.setText("0");
         }
         exercise = (com.example.gopetfitting.Activity)getIntent().getSerializableExtra("activity");
         //Log.d("exercise: ", String.valueOf(exercise.getBurnedCalories()));
@@ -253,6 +254,7 @@ public class UserPageActivity extends AppCompatActivity {
             }
             pictureFilePath = image.getAbsolutePath();
             System.out.println("pictureFilePath " + pictureFilePath);
+            user = new User();
             if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
                 File imgFile = new File(pictureFilePath);
                 System.out.println("imgFile is: " + imgFile.toString());
@@ -265,6 +267,7 @@ public class UserPageActivity extends AppCompatActivity {
                 System.out.println("localimage is: " + user.getLocalImage());
             }
         } else if ("choose from gallery".equals(photoFrom)) {
+            user = new User();
             if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
                 imageUri = data.getData();
                 imageView.setImageURI(imageUri);
@@ -329,6 +332,13 @@ public class UserPageActivity extends AppCompatActivity {
         Intent intent=new Intent();
         intent.setClass(UserPageActivity.this, PetStoreActivity.class);
         startActivity(intent);
+    }
+
+    public void add(View view) {
+        add = (EditText)findViewById(R.id.snack);
+        int toadd = Integer.parseInt(add.getText().toString());
+        loseTotal.setText(String.valueOf(toadd+Integer.parseInt(loseTotal.getText().toString())));
+        todo.setText(String.valueOf(toadd+Integer.parseInt(todo.getText().toString())));
     }
 }
 
